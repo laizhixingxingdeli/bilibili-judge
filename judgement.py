@@ -48,8 +48,15 @@ async def start(user: dict, config: dict) -> None:
 async def main() -> None:
     config = load_config()
     users = config.get('users', [])
+
+    # 先刷新 Token（每次运行自动续期 180 天）
+    try:
+        from auth import refresh_token
+        refresh_token()
+    except Exception as e:
+        logger.warning(f'Token刷新失败（不影响投票）: {e}')
+
     if not users:
-        logger.error('config.json 中无用户配置')
         print('\n❌ 未检测到用户配置，请运行以下命令进行初始化:')
         print('   python setup.py')
         sys.exit(1)
