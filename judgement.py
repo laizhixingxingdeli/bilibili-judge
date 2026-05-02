@@ -12,6 +12,36 @@ from notify import push, send_email
 
 logger = logging.getLogger(__name__)
 
+async def _ensure_jury_qualification(api: BiliAPI, config: dict) -> None:
+    """检查风纪委员资格，过期或即将过期时自动申请"""
+    import time
+    info = await api.jury_info()
+    if info.get('code') != 0:
+        logger.warning(f'获取风纪委员状态失败: {info.get("message")}')
+        return
+
+    data = info.get('data', {})
+    term_end = data.get('term_end', 0)
+    now = int(time.time())
+    days_left = (term_end - now) // 86400
+
+    logger.info(f'风纪委员: {data.get("uname", "?")}  '
+                f'状态={data.get("status")}  '
+                f'剩余{days_left}天  '
+                f'已审{data.get("case_total", 0)}案')
+
+    # 过期 或 剩余不足7天 → 主动申请
+    if days_left < 7:
+        logger.info(f'资格即将过期（剩余{days_left}天），自动申请续期...')
+        result = await api.jury_apply()
+        if result.get('code') == 0:
+            logger.info('✅ 风纪委员资格申请成功')
+        else:
+            logger.info(f'申请结果: {result.get("message", result)}')
+    else:
+        logger.info(f'资格有效期充足，无需续期')
+
+
 MODES = {1: run_mode_1, 2: run_mode_2}
 
 
@@ -33,6 +63,12 @@ async def start(user: dict, config: dict) -> None:
             await push(config, user_id, 'UnknownError')
             send_email(config, '风纪委员脚本运行失败', f'登录异常: {e}')
             return
+
+        # 检查风纪委员资格，快过期时自动续期
+        try:
+            await _ensure_jury_qualification(api, config)
+        except Exception as e:
+            logger.warning(f'风纪委员资格检查失败（不影响投票）: {e}')
 
         try:
             logger.info(f'{api.name}：开始风纪委员投票')
