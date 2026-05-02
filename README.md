@@ -129,10 +129,10 @@ ssh root@你的服务器IP
 crontab -e
 ```
 
-添加一行（每天凌晨2点跑一次）：
+添加一行（每天晚上10点跑一次）：
 
 ```
-0 2 * * * cd /opt/bilibili-judge && python judgement.py >> run.log 2>&1
+0 22 * * * cd /opt/bilibili-judge && python judgement.py >> run.log 2>&1
 ```
 
 查看运行日志：
