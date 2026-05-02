@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+venv/
+.env
+qrcode_login.png
+config/info.json
+.DS_Store
+*.log

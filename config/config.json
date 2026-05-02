@@ -1,0 +1,64 @@
+{
+  "appkey": "4409e2ce8ffd12b8",
+  "appsec": "59b43e04ad6965f34319062b478f83dd",
+  "email": {
+    "sender": "",
+    "password": "",
+    "recipient": "",
+    "smtp_server": "smtp.qq.com",
+    "smtp_port": 587
+  },
+  "http_header": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+    "Referer": "https://www.bilibili.com/",
+    "Connection": "keep-alive"
+  },
+  "default_vote": {
+    "mode": 2,
+    "vote": [
+      1
+    ],
+    "once": true
+  },
+  "users": [
+    {
+      "cookieDatas": {
+        "SESSDATA": "",
+        "bili_jct": "",
+        "DedeUserID": ""
+      }
+    }
+  ],
+  "push": {
+    "enable": false,
+    "msgtpye": [
+      "CookieExpires",
+      "UnknownError",
+      "DailyMissions"
+    ],
+    "wxpush": {
+      "enable": false,
+      "corpid": "",
+      "secret": "",
+      "agentid": 1000001,
+      "touser": "@all"
+    },
+    "tgpush": {
+      "enable": false,
+      "bot_token": "",
+      "chat_id": ""
+    },
+    "server": {
+      "enable": false,
+      "sendkey": ""
+    },
+    "ijingniu": {
+      "enable": false,
+      "channelkey": ""
+    },
+    "pushplus": {
+      "enable": false,
+      "token": ""
+    }
+  }
+}
